@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pesan hati yang tulus">
+    <title>Apa Kamu Baik-Baik Saja?</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Nunito:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Background Elements -->
+    <div class="floating-heart heart1">💖</div>
+    <div class="floating-heart heart2">💕</div>
+    <div class="floating-heart heart3">💗</div>
+    <div class="floating-heart heart4">💓</div>
+    <div class="floating-heart heart5">💖</div>
+
+    <!-- Main Content -->
+    <!-- Envelope Animation -->
+    <div class="envelope" id="envelope">
+        <!-- Cute Envelope SVG -->
+        <svg class="envelope-svg" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- Envelope body -->
+            <rect x="20" y="50" width="260" height="120" fill="#ffb6c1" stroke="#ff99b2" stroke-width="2" rx="8"/>
+            
+            <!-- Envelope flap (top) -->
+            <path d="M 20 50 L 150 120 L 280 50" fill="none" stroke="#ff99b2" stroke-width="2"/>
+            
+            <!-- Left eye -->
+            <circle cx="100" cy="85" r="5" fill="#333"/>
+            <circle cx="102" cy="83" r="2" fill="#fff"/>
+            
+            <!-- Right eye -->
+            <circle cx="200" cy="85" r="5" fill="#333"/>
+            <circle cx="202" cy="83" r="2" fill="#fff"/>
+            
+            <!-- Cute mouth (smile) -->
+            <path d="M 140 105 Q 150 115 160 105" stroke="#ff5577" stroke-width="2" fill="none" stroke-linecap="round"/>
+            
+            <!-- Blush left -->
+            <circle cx="75" cy="100" r="8" fill="#ff99b2" opacity="0.6"/>
+            
+            <!-- Blush right -->
+            <circle cx="225" cy="100" r="8" fill="#ff99b2" opacity="0.6"/>
+            
+            <!-- Sparkles -->
+            <text x="30" y="70" font-size="16" opacity="0.7">✨</text>
+            <text x="260" y="70" font-size="16" opacity="0.7">✨</text>
+            
+            <!-- Paper inside (peeking) -->
+            <rect x="40" y="130" width="220" height="30" fill="#fff9f0" rx="4"/>
+        </svg>
+        
+        <div class="click-to-open" id="clickPrompt">Klik untuk Membuka Pesan 💌</div>
+    </div>
+
+    <!-- Message Card -->
+    <div class="card" id="card">
+        <h1 class="title">Apa Kamu Baik-Baik Saja?</h1>
+        <p class="paragraph">
+            Aku cuma ingin tahu kabarmu… bukan untuk mengganggu, hanya benar-benar berharap kamu baik di sana.
+        </p>
+        <p class="paragraph">
+            Aku minta maaf kalau keputusan dan sikapku kemarin membuatmu sedih atau kecewa. Aku nggak mau membenarkan
+            apa pun—aku hanya mengakui bahwa aku banyak salah.
+        </p>
+        <p class="paragraph">
+            Kalau kamu berkenan, kabari aku bagaimana kamu sekarang. Setelah itu, terserah kamu mau lanjut jawab atau
+            tidak.
+            Yang penting kamu tahu, aku tetap berharap yang terbaik untukmu.
+        </p>
+        <p class="signature">— Arjuansyah</p>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Get DOM elements
+        const clickPrompt = document.getElementById('clickPrompt');
+        const envelope = document.getElementById('envelope');
+        const card = document.getElementById('card');
+
+        // Function to play a cute sound effect using Web Audio API
+        function playFunnySound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const now = audioContext.currentTime;
+
+            // Create oscillators for a cute "pop" sound
+            const osc1 = audioContext.createOscillator();
+            const osc2 = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+
+            // Set up the oscillators
+            osc1.type = 'sine';
+            osc2.type = 'triangle';
+            osc1.frequency.setValueAtTime(800, now);
+            osc1.frequency.exponentialRampToValueAtTime(400, now + 0.1);
+            osc2.frequency.setValueAtTime(1200, now);
+            osc2.frequency.exponentialRampToValueAtTime(600, now + 0.1);
+
+            // Set up gain for fade out
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+
+            // Connect and start
+            osc1.connect(gain);
+            osc2.connect(gain);
+            gain.connect(audioContext.destination);
+
+            osc1.start(now);
+            osc2.start(now);
+            osc1.stop(now + 0.15);
+            osc2.stop(now + 0.15);
+        }
+
+        // Add click event listener to open the letter
+        clickPrompt.addEventListener('click', () => {
+            // Play funny sound
+            playFunnySound();
+
+            clickPrompt.style.display = 'none';
+            envelope.classList.add('show');
+            envelope.classList.add('open');
+
+            // Show card after envelope animation
+            setTimeout(() => {
+                card.classList.add('show');
+            }, 3000);
+        });
+    </script>
+</body>
+
+</html>
